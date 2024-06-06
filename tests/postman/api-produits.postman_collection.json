@@ -1,0 +1,118 @@
+{
+  "info": {
+    "name": "API Produits",
+    "description": "Collection de requêtes pour tester l'API Produits",
+    "_postman_id": "YOUR_POSTMAN_COLLECTION_ID"
+  },
+  "item": [
+    {
+      "name": "Récupérer tous les produits",
+      "request": {
+        "method": "GET",
+        "url": "http://localhost:3000/api/produits"
+      }
+    },
+    {
+      "name": "Récupérer un produit",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/produits/{{produitId}}",
+          "host": [
+            "http://localhost:3000"
+          ],
+          "path": [
+            "api",
+            "produits",
+            "{{produitId}}"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Créer un produit",
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:3000/api/produits",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"nom\": \"Café Colombien\",\n    \"description\": \"Café arabica cultivé en Colombie\",\n    \"prix\": 12.99,\n    \"categorie\": \"Café\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Mettre à jour un produit",
+      "request": {
+        "method": "PUT",
+        "url": {
+          "raw": "http://localhost:3000/api/produits/{{produitId}}",
+          "host": [
+            "http://localhost:3000"
+          ],
+          "path": [
+            "api",
+            "produits",
+            "{{produitId}}"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"nom\": \"Café Colombien Bio\",\n    \"description\": \"Café arabica cultivé en Colombie, certifié biologique\",\n    \"prix\": 14.99,\n    \"categorie\": \"Café\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Supprimer un produit",
+      "request": {
+        "method": "DELETE",
+        "url": {
+          "raw": "http://localhost:3000/api/produits/{{produitId}}",
+          "host": [
+            "http://localhost:3000"
+          ],
+          "path": [
+            "api",
+            "produits",
+            "{{produitId}}"
+          ]
+        }
+      }
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "produitId",
+      "value": ""
+    }
+  ]
+}
