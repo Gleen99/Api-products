@@ -43,7 +43,19 @@
             }
           }
         }
-      }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "var jsonData = pm.response.json();",
+              "pm.environment.set(\"produitId\", jsonData._id);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
     },
     {
       "name": "Mettre à jour un produit",

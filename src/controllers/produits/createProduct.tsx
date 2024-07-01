@@ -1,37 +1,34 @@
 import { Request, Response } from 'express';
 import { rabbitMQClient } from "../../../rabbitmq";
-import { isValidObjectId } from 'mongoose';
+import Product, {IProduct, MongooseValidationError} from "../../models/products/ProductsModels";
 import { validateProduct } from "../../Helpers/ValidatorsProducts";
-import Product, {MongooseValidationError} from "../../models/products/ProductsModels";
 
-export const updateProduct = async (req: Request, res: Response): Promise<void> => {
-    const { id } = req.params;
-
-    if (!id || !isValidObjectId(id)) {
-        res.status(400).json({ message: 'ID du produit invalide' });
-        return;
-    }
+export const createProduct = async (req: Request, res: Response): Promise<void> => {
+    const productData: Partial<IProduct> = req.body;
 
     // Validate input data
-    const validationErrors = validateProduct(req.body);
+    const validationErrors = validateProduct(productData);
     if (validationErrors.length > 0) {
         res.status(400).json({ message: 'Validation failed', errors: validationErrors });
         return;
     }
 
     try {
-        const product = await Product.findByIdAndUpdate(id, req.body, { new: true, runValidators: true });
-
-        if (!product) {
-            res.status(404).json({ message: 'Produit non trouvé' });
+        // Vérifier si le produit existe déjà
+        const existingProduct = await Product.findOne({ name: productData.name });
+        if (existingProduct) {
+            res.status(409).json({ message: 'Un produit avec ce nom existe déjà' });
             return;
         }
 
-        // Publier un message dans RabbitMQ
-        await rabbitMQClient.publishMessage('produit_mis_a_jour', JSON.stringify(product));
+        const product = new Product(productData);
+        const newProduct = await product.save();
 
-        res.status(200).json(product);
-    } catch (err ) {
+        // Publier un message dans RabbitMQ
+        await rabbitMQClient.publishMessage('produit_cree', JSON.stringify(newProduct));
+
+        res.status(201).json(newProduct);
+    } catch (err) {
         if (err instanceof Error) {
             if (err.name === 'ValidationError' && 'errors' in err) {
                 const validationError = err as MongooseValidationError;
