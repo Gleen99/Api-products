@@ -1,4 +1,6 @@
 import express, { Express, Request, Response, NextFunction } from 'express';
+import swaggerUI from 'swagger-ui-express';
+import swaggerSpec from './swagger';
 import mongoose from 'mongoose';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
@@ -43,8 +45,14 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
+// Définissez l'URL de base de votre API
+const API_BASE_PATH = '/api/v1';
+
 // Routes avec versioning
-app.use('/api/v1/products', produitRoutes);
+app.use('/products', produitRoutes);
+
+// Route pour la documentation Swagger
+app.use(`${API_BASE_PATH}/docs`, swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 
 // Gestion des erreurs améliorée
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
@@ -65,7 +73,7 @@ const connectToMongoDB = async () => {
         throw error;
     }
 };
-//Connection mongo
+//Connection RabbitMQ
 const setupRabbitMQ = async () => {
     try {
         await rabbitMQClient.connect();

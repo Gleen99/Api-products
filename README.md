@@ -11,7 +11,7 @@ Ce projet implémente une API RESTful pour la gestion des produits, conformémen
 
 ## Installation
 
-1. Clonez le dépôt Git : `git clone https://github.com/payetonkawa/api-produits.git`
+1. Clonez le dépôt Git : `git clone https://github.com/Gleen99/Api-products`
 2. Accédez au répertoire du projet : `cd api-produits`
 3. Installez les dépendances : `npm install`
 
