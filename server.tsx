@@ -49,7 +49,7 @@ app.use(limiter);
 const API_BASE_PATH = '/api/v1';
 
 // Routes avec versioning
-app.use('/products', produitRoutes);
+app.use(`${API_BASE_PATH}/products`, produitRoutes);
 
 // Route pour la documentation Swagger
 app.use(`${API_BASE_PATH}/docs`, swaggerUI.serve, swaggerUI.setup(swaggerSpec));

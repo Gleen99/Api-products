@@ -1,7 +1,7 @@
 {
-  "name": "TestIntégration",
+  "name": "Api produits",
   "version": "1.0.0",
-  "description": "Test d'intégration",
+  "description": "Api produits",
   "main": "index.js",
   "scripts": {
     "build": "tsc",
@@ -12,8 +12,10 @@
   "license": "ISC",
   "dependencies": {
     "amqplib": "^0.10.4",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.4.0",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
@@ -22,9 +24,11 @@
   },
   "devDependencies": {
     "@types/amqplib": "^0.10.5",
+    "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "@types/express-rate-limit": "^6.0.0",
     "@types/helmet": "^4.0.0",
+    "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^20.12.12",
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.6",
