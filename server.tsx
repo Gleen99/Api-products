@@ -33,6 +33,24 @@ if (process.env.NODE_ENV !== 'production') {
     }));
 }
 
+// Fonction pour valider la clé API
+const isValidApiKey = (apiKey: string): boolean => {
+    // Implémentez ici la logique de validation de la clé API
+    // Par exemple, vérifiez si la clé existe dans une base de données ou un fichier de configuration
+    const validApiKeys = ['key1', 'key2', 'key3']; // Exemple simplifié
+    return validApiKeys.includes(apiKey);
+};
+
+// Middleware de validation de la clé API
+const validateApiKey = (req: Request, res: Response, next: NextFunction) => {
+    const apiKey = req.header('X-API-Key');
+    if (!apiKey || !isValidApiKey(apiKey)) {
+        logger.warn(`Tentative d'accès non autorisé avec la clé API: ${apiKey}`);
+        return res.status(401).json({ error: 'Invalid API key' });
+    }
+    next();
+};
+
 // Middlewares de sécurité
 app.use(helmet());
 app.use(express.json());
@@ -48,8 +66,8 @@ app.use(limiter);
 // Définissez l'URL de base de votre API
 const API_BASE_PATH = '/api/v1';
 
-// Routes avec versioning
-app.use(`${API_BASE_PATH}/products`, produitRoutes);
+// Routes avec versioning et validation de la clé API
+app.use(`${API_BASE_PATH}/products`, validateApiKey, produitRoutes);
 
 // Route pour la documentation Swagger
 app.use(`${API_BASE_PATH}/docs`, swaggerUI.serve, swaggerUI.setup(swaggerSpec));
@@ -73,6 +91,7 @@ const connectToMongoDB = async () => {
         throw error;
     }
 };
+
 //Connection RabbitMQ
 const setupRabbitMQ = async () => {
     try {
