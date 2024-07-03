@@ -9,19 +9,52 @@ const router = express.Router();
 
 /**
  * @swagger
- * /api/products:
+ * components:
+ *   securitySchemes:
+ *     ApiKeyAuth:
+ *       type: apiKey
+ *       in: header
+ *       name: X-API-Key
+ *   schemas:
+ *     Product:
+ *       type: object
+ *       required:
+ *         - name
+ *         - price
+ *       properties:
+ *         id:
+ *           type: string
+ *           description: L'ID auto-généré du produit
+ *         name:
+ *           type: string
+ *           description: Le nom du produit
+ *         description:
+ *           type: string
+ *           description: La description du produit
+ *         price:
+ *           type: number
+ *           description: Le prix du produit
+ */
+
+/**
+ * @swagger
+ * /products:
  *   get:
- *     summary: Récupérer tous les products
+ *     summary: Récupérer tous les produits
  *     tags: [Products]
+ *     security:
+ *       - ApiKeyAuth: []
  *     responses:
  *       200:
- *         description: Liste des products
+ *         description: Liste des produits
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Product'
+ *       401:
+ *         description: Non autorisé
  *       500:
  *         description: Erreur serveur
  */
@@ -29,10 +62,12 @@ router.get('/', getProducts);
 
 /**
  * @swagger
- * /api/products/{id}:
+ * /products/{id}:
  *   get:
  *     summary: Récupérer un produit par son identifiant
  *     tags: [Products]
+ *     security:
+ *       - ApiKeyAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -47,6 +82,8 @@ router.get('/', getProducts);
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Product'
+ *       401:
+ *         description: Non autorisé
  *       404:
  *         description: Produit non trouvé
  *       500:
@@ -56,10 +93,12 @@ router.get('/:id', getProduct);
 
 /**
  * @swagger
- * /api/products:
+ * /products:
  *   post:
  *     summary: Créer un nouveau produit
  *     tags: [Products]
+ *     security:
+ *       - ApiKeyAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -75,6 +114,8 @@ router.get('/:id', getProduct);
  *               $ref: '#/components/schemas/Product'
  *       400:
  *         description: Données invalides
+ *       401:
+ *         description: Non autorisé
  *       500:
  *         description: Erreur serveur
  */
@@ -82,10 +123,12 @@ router.post('/', createProduct);
 
 /**
  * @swagger
- * /api/products/{id}:
+ * /products/{id}:
  *   put:
  *     summary: Mettre à jour un produit
  *     tags: [Products]
+ *     security:
+ *       - ApiKeyAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -108,6 +151,8 @@ router.post('/', createProduct);
  *               $ref: '#/components/schemas/Product'
  *       400:
  *         description: Données invalides
+ *       401:
+ *         description: Non autorisé
  *       404:
  *         description: Produit non trouvé
  *       500:
@@ -117,10 +162,12 @@ router.put('/:id', updateProduct);
 
 /**
  * @swagger
- * /api/products/{id}:
+ * /products/{id}:
  *   delete:
  *     summary: Supprimer un produit
  *     tags: [Products]
+ *     security:
+ *       - ApiKeyAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -131,6 +178,8 @@ router.put('/:id', updateProduct);
  *     responses:
  *       200:
  *         description: Produit supprimé avec succès
+ *       401:
+ *         description: Non autorisé
  *       404:
  *         description: Produit non trouvé
  *       500:
