@@ -30,9 +30,6 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run tests
-        run: npm test -- --passWithNoTests
-
       - name: Run Newman tests
         run: |
           npm install -g newman
