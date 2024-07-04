@@ -34,7 +34,7 @@ class RabbitMQClient {
       throw new Error('Channel not established');
     }
     await this.channel.assertQueue(queue, { durable: false });
-    await this.channel.consume(queue, callback, { noAck: true });
+    await this.channel.consume(queue, callback, { noAck: false });  // Changed to noAck: false
   }
 
   async closeConnection() {
@@ -45,6 +45,7 @@ class RabbitMQClient {
       await this.connection.close();
     }
   }
+
   async setup() {
     if (!this.channel) {
       throw new Error('Channel not established');
@@ -53,6 +54,19 @@ class RabbitMQClient {
     await this.channel.assertQueue('products_details_response', { durable: false });
   }
 
+  async ackMessage(message: amqp.ConsumeMessage) {
+    if (!this.channel) {
+      throw new Error('Channel not established');
+    }
+    this.channel.ack(message);
+  }
+
+  async nackMessage(message: amqp.ConsumeMessage, allUpTo: boolean = false, requeue: boolean = true) {
+    if (!this.channel) {
+      throw new Error('Channel not established');
+    }
+    this.channel.nack(message, allUpTo, requeue);
+  }
 }
 
 export const rabbitMQClient = new RabbitMQClient();

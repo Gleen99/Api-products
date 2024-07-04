@@ -18,7 +18,7 @@ export async function fetchProductDetails(productIds: string[]): Promise<IProduc
 export async function handleGetProductDetails(msg: amqp.ConsumeMessage | null) {
     if (!msg) return;
 
-    const { productIds, correlationId } = JSON.parse(msg.content.toString());
+    const { productIds, responseQueue, correlationId } = JSON.parse(msg.content.toString());
 
     try {
         console.log(`Récupération des détails pour les produits: ${productIds.join(', ')}`);
@@ -26,17 +26,19 @@ export async function handleGetProductDetails(msg: amqp.ConsumeMessage | null) {
 
         console.log('Envoi de la réponse avec les détails des products');
         await rabbitMQClient.publishMessage(
-            'products_details_response',
+            responseQueue,  // Use the responseQueue provided in the request
             JSON.stringify(productDetails),
             { correlationId }
         );
+        await rabbitMQClient.ackMessage(msg);
     } catch (error) {
         console.error('Erreur lors de la récupération des détails des products:', error);
         await rabbitMQClient.publishMessage(
-            'products_details_response',
+            responseQueue,  // Use the responseQueue provided in the request
             JSON.stringify({ error: 'Erreur lors de la récupération des détails des products' }),
             { correlationId }
         );
+        await rabbitMQClient.nackMessage(msg, false, false);
     }
 }
 
