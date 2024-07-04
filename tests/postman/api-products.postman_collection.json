@@ -2,41 +2,24 @@
   "info": {
     "name": "API Produits",
     "description": "Collection de requêtes pour tester l'API Produits",
-    "_postman_id": "YOUR_POSTMAN_COLLECTION_ID"
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
     {
-      "name": "Récupérer tous les produits",
-      "request": {
-        "method": "GET",
-        "url": "http://localhost:3000/api/produits"
-      }
-    },
-    {
-      "name": "Récupérer un produit",
-      "request": {
-        "method": "GET",
-        "url": {
-          "raw": "http://localhost:3000/api/produits/{{produitId}}",
-          "host": [
-            "http://localhost:3000"
-          ],
-          "path": [
-            "api",
-            "produits",
-            "{{produitId}}"
-          ]
-        }
-      }
-    },
-    {
-      "name": "Créer un produit",
+      "name": "Create a unique product",
       "request": {
         "method": "POST",
-        "url": "http://localhost:3000/api/produits",
+        "url": "http://88.125.155.66:32783/api/v1/products",
+        "header": [
+          {
+            "key": "X-API-Key",
+            "value": "key1",
+            "type": "text"
+          }
+        ],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"nom\": \"Café Colombien\",\n    \"description\": \"Café arabica cultivé en Colombie\",\n    \"prix\": 12.99,\n    \"categorie\": \"Café\"\n}",
+          "raw": "{\n  \"name\": \"Unique Product Name Test\",\n  \"details\": {\n    \"price\": 750.00,\n    \"description\": \"Test product description.\",\n    \"color\": \"blue\"\n  },\n  \"stock\": 600\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -50,7 +33,25 @@
           "script": {
             "exec": [
               "var jsonData = pm.response.json();",
-              "pm.environment.set(\"produitId\", jsonData._id);"
+              "pm.environment.set(\"produitId\", jsonData._id);",
+              "pm.test(\"Status code is 201\", function () {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "pm.test(\"Product name is correct\", function () {",
+              "    pm.expect(jsonData.name).to.eql(\"Unique Product Name Test\");",
+              "});",
+              "pm.test(\"Product price is correct\", function () {",
+              "    pm.expect(jsonData.details.price.toString()).to.eql(\"750\");",
+              "});",
+              "pm.test(\"Product description is correct\", function () {",
+              "    pm.expect(jsonData.details.description).to.eql(\"Test product description.\");",
+              "});",
+              "pm.test(\"Product color is correct\", function () {",
+              "    pm.expect(jsonData.details.color).to.eql(\"blue\");",
+              "});",
+              "pm.test(\"Product stock is correct\", function () {",
+              "    pm.expect(jsonData.stock).to.eql(600);",
+              "});"
             ],
             "type": "text/javascript"
           }
@@ -58,23 +59,74 @@
       ]
     },
     {
-      "name": "Mettre à jour un produit",
+      "name": "Retrieve all products",
       "request": {
-        "method": "PUT",
+        "method": "GET",
+        "url": "http://88.125.155.66:32783/api/v1/products",
+        "header": [
+          {
+            "key": "X-API-Key",
+            "value": "key1",
+            "type": "text"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Retrieve a product",
+      "request": {
+        "method": "GET",
         "url": {
-          "raw": "http://localhost:3000/api/produits/{{produitId}}",
+          "raw": "http://88.125.155.66:32783/api/v1/products/{{produitId}}",
+          "protocol": "http",
           "host": [
-            "http://localhost:3000"
+            "88.125.155.66"
           ],
+          "port": "32783",
           "path": [
             "api",
-            "produits",
+            "v1",
+            "products",
             "{{produitId}}"
           ]
         },
+        "header": [
+          {
+            "key": "X-API-Key",
+            "value": "key1",
+            "type": "text"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Update a product",
+      "request": {
+        "method": "PUT",
+        "url": {
+          "raw": "http://88.125.155.66:32783/api/v1/products/{{produitId}}",
+          "protocol": "http",
+          "host": [
+            "88.125.155.66"
+          ],
+          "port": "32783",
+          "path": [
+            "api",
+            "v1",
+            "products",
+            "{{produitId}}"
+          ]
+        },
+        "header": [
+          {
+            "key": "X-API-Key",
+            "value": "key1",
+            "type": "text"
+          }
+        ],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"nom\": \"Café Colombien Bio\",\n    \"description\": \"Café arabica cultivé en Colombie, certifié biologique\",\n    \"prix\": 14.99,\n    \"categorie\": \"Café\"\n}",
+          "raw": "{\n  \"name\": \"Updated Product Name Test\",\n  \"details\": {\n    \"price\": 800.00,\n    \"description\": \"Updated product description.\",\n    \"color\": \"green\"\n  },\n  \"stock\": 700\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -84,20 +136,30 @@
       }
     },
     {
-      "name": "Supprimer un produit",
+      "name": "Delete a product",
       "request": {
         "method": "DELETE",
         "url": {
-          "raw": "http://localhost:3000/api/produits/{{produitId}}",
+          "raw": "http://88.125.155.66:32783/api/v1/products/{{produitId}}",
+          "protocol": "http",
           "host": [
-            "http://localhost:3000"
+            "88.125.155.66"
           ],
+          "port": "32783",
           "path": [
             "api",
-            "produits",
+            "v1",
+            "products",
             "{{produitId}}"
           ]
-        }
+        },
+        "header": [
+          {
+            "key": "X-API-Key",
+            "value": "key1",
+            "type": "text"
+          }
+        ]
       }
     }
   ],
@@ -105,19 +167,15 @@
     {
       "listen": "prerequest",
       "script": {
-        "type": "text/javascript",
-        "exec": [
-          ""
-        ]
+        "exec": [],
+        "type": "text/javascript"
       }
     },
     {
       "listen": "test",
       "script": {
-        "type": "text/javascript",
-        "exec": [
-          ""
-        ]
+        "exec": [],
+        "type": "text/javascript"
       }
     }
   ],
