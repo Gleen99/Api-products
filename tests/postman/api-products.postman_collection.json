@@ -32,6 +32,8 @@
           "listen": "test",
           "script": {
             "exec": [
+              "console.log(pm.request);", // Log request details
+              "console.log(pm.response.json());", // Log response details
               "var jsonData = pm.response.json();",
               "pm.environment.set(\"produitId\", jsonData._id);",
               "pm.test(\"Status code is 201\", function () {",
