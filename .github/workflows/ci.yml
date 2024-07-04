@@ -30,8 +30,12 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Update har-validator and uuid
+        run: |
+          npm install har-validator@latest uuid@latest
+          npm audit fix --force
 
       - name: Run Newman tests
         run: |
           npm install -g newman
-          newman run ./__tests__/postman/api-products.postman_collection.json
+          newman run ./__tests__/postman/api-products.postman_collection.json --env-var "API_KEY=${{ secrets.API_KEY }}"

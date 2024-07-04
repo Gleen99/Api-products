@@ -10,6 +10,18 @@
       "request": {
         "method": "POST",
         "url": "http://88.125.155.66:32783/api/v1/products",
+        "header": [
+          {
+            "key": "X-API-Key",
+            "value": "{{API_KEY}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
         "body": {
           "mode": "raw",
           "raw": "{\n  \"name\": \"Unique Product Name Test\",\n  \"details\": {\n    \"price\": 750.00,\n    \"description\": \"Test product description.\",\n    \"color\": \"blue\"\n  },\n  \"stock\": 600\n}",
@@ -25,6 +37,9 @@
           "listen": "test",
           "script": {
             "exec": [
+              "console.log('Request Headers:', pm.request.headers);",
+              "console.log('Request Body:', pm.request.body);",
+              "console.log('Response:', pm.response.json());",
               "var jsonData = pm.response.json();",
               "pm.environment.set(\"produitId\", jsonData._id);",
               "pm.test(\"Status code is 201\", function () {",
@@ -55,7 +70,19 @@
       "name": "Retrieve all products",
       "request": {
         "method": "GET",
-        "url": "http://88.125.155.66:32783/api/v1/products"
+        "url": "http://88.125.155.66:32783/api/v1/products",
+        "header": [
+          {
+            "key": "X-API-Key",
+            "value": "{{API_KEY}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ]
       }
     },
     {
@@ -75,7 +102,19 @@
             "products",
             "{{produitId}}"
           ]
-        }
+        },
+        "header": [
+          {
+            "key": "X-API-Key",
+            "value": "{{API_KEY}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ]
       }
     },
     {
@@ -96,6 +135,18 @@
             "{{produitId}}"
           ]
         },
+        "header": [
+          {
+            "key": "X-API-Key",
+            "value": "{{API_KEY}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
         "body": {
           "mode": "raw",
           "raw": "{\n  \"name\": \"Updated Product Name Test\",\n  \"details\": {\n    \"price\": 800.00,\n    \"description\": \"Updated product description.\",\n    \"color\": \"green\"\n  },\n  \"stock\": 700\n}",
@@ -124,7 +175,19 @@
             "products",
             "{{produitId}}"
           ]
-        }
+        },
+        "header": [
+          {
+            "key": "X-API-Key",
+            "value": "{{API_KEY}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ]
       }
     }
   ],
