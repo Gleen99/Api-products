@@ -38,4 +38,4 @@ jobs:
       - name: Run Newman tests
         run: |
           npm install -g newman
-          newman run ./__tests__/postman/api-products.postman_collection.json --env-var "API_KEY=${{ secrets.API_KEY }}"
+          newman run ./__tests__/postman/api-products.postman_collection.json --env-var "X-API-Key=key1"
