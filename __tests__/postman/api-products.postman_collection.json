@@ -15,6 +15,11 @@
             "key": "X-API-Key",
             "value": "key1",
             "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
           }
         ],
         "body": {
@@ -32,8 +37,9 @@
           "listen": "test",
           "script": {
             "exec": [
-              "console.log(pm.request);", // Log request details
-              "console.log(pm.response.json());", // Log response details
+              "console.log('Request Headers:', pm.request.headers);",
+              "console.log('Request Body:', pm.request.body);",
+              "console.log('Response:', pm.response.json());",
               "var jsonData = pm.response.json();",
               "pm.environment.set(\"produitId\", jsonData._id);",
               "pm.test(\"Status code is 201\", function () {",
@@ -70,6 +76,11 @@
             "key": "X-API-Key",
             "value": "key1",
             "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
           }
         ]
       }
@@ -97,6 +108,11 @@
             "key": "X-API-Key",
             "value": "key1",
             "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
           }
         ]
       }
@@ -123,6 +139,11 @@
           {
             "key": "X-API-Key",
             "value": "key1",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
             "type": "text"
           }
         ],
@@ -159,6 +180,11 @@
           {
             "key": "X-API-Key",
             "value": "key1",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
             "type": "text"
           }
         ]

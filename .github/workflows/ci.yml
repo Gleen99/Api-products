@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      mongo:
+        image: mongo:4.4
+        ports:
+          - 27017:27017
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Update har-validator and uuid
+        run: |
+          npm install har-validator@latest uuid@latest
+          npm audit fix --force
+
+      - name: Run Newman tests
+        run: |
+          npm install -g newman
+          newman run ./__tests__/postman/api-products.postman_collection.json --env-var "X-API-Key=key1"
